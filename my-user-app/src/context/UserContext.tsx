@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { USERS_LIST } from '../data/users.config.js';
 import { UserContext } from './hooks/useUserContext.ts';
 
@@ -31,24 +31,26 @@ export const UserProvider: React.FC = ({ children }) => {
     fetchUsers();
   }, []);
 
-  const addUser = (newUser: Omit<User, 'id'>) => {
+  const addUser = useCallback((newUser: Omit<User, 'id'>) => {
     // Состояние теряется после рефреша страницы либо напрямую при изменении урла. 
     // Конкретно для этой задачи (без бека) я бы использовал браузерный localStorage
     const newId = users.length > 0 ? Math.max(...users.map((user) => user.id)) + 1 : 1;
     setUsers([...users, { ...newUser, id: newId }]);
-  };
+  }, [users]);
 
 
-  const updateUser = (updatedUser: User) => {
+  const updateUser = useCallback((updatedUser: User) => {
     setUsers(users.map((user) => (user.id === updatedUser.id ? updatedUser : user)));
-  };
+  }, [users]);
 
-  const deleteUser = (id: number) => {
+  const deleteUser = useCallback((id: number) => {
     setUsers(users.filter((user) => user.id !== id));
-  };
+  }, [users]);
+
+  const contextValue = useMemo(() => ({ users, addUser, updateUser, deleteUser }), [addUser, deleteUser, updateUser, users]);
 
   return (
-    <UserContext.Provider value={{ users, addUser, updateUser, deleteUser }}>
+    <UserContext.Provider value={contextValue}>
       {children}
     </UserContext.Provider>
   );

@@ -12,12 +12,24 @@ const UserDetail: React.FC = () => {
   }
 
   return (
-    <div className="p-4">
+    <div className="w-full max-w-2xl mx-auto my-8 p-8 bg-gray-100 border rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-4">Информация о пользователе</h2>
-      <p>Имя: {user.name}</p>
-      <p>Email: {user.email}</p>
-      <p>Телефон: {user.phone}</p>
-      <p>Город: {user.city}</p>
+      <p className="mb-2">
+        <span className="text-gray-700 font-bold">Имя: </span> 
+        {user.name}
+      </p>
+      <p className="mb-2">
+        <span className="text-gray-700 font-bold">Email: </span> 
+        {user.email}
+      </p>
+      <p className="mb-2"> 
+        <span className="text-gray-700 font-bold">Телефон: </span> 
+        {user.phone}
+      </p>
+      <p className="mb-2">
+        <span className="text-gray-700 font-bold">Город: </span> 
+        {user.city}
+      </p>
     </div>
   );
 };
